@@ -20,14 +20,20 @@ const error = document.getElementById("sj-error");
  */
 const errorCode = document.getElementById("sj-error-code");
 
+const nav = document.getElementById("sj-nav");
+const btnHome = document.getElementById("sj-home");
+const btnBack = document.getElementById("sj-back");
+const btnReload = document.getElementById("sj-reload");
+const btnForward = document.getElementById("sj-forward");
+
 const { ScramjetController } = $scramjetLoadController();
 
 const scramjet = new ScramjetController({
-	files: {
-		wasm: "/scram/scramjet.wasm.wasm",
-		all: "/scram/scramjet.all.js",
-		sync: "/scram/scramjet.sync.js",
-	},
+        files: {
+                wasm: "/scram/scramjet.wasm.wasm",
+                all: "/scram/scramjet.all.js",
+                sync: "/scram/scramjet.sync.js",
+        },
 });
 
 scramjet.init();
@@ -35,30 +41,46 @@ scramjet.init();
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
 form.addEventListener("submit", async (event) => {
-	event.preventDefault();
+        event.preventDefault();
 
-	try {
-		await registerSW();
-	} catch (err) {
-		error.textContent = "Failed to register service worker.";
-		errorCode.textContent = err.toString();
-		throw err;
-	}
+        try {
+                await registerSW();
+        } catch (err) {
+                error.textContent = "Failed to register service worker.";
+                errorCode.textContent = err.toString();
+                throw err;
+        }
 
-	const url = search(address.value, searchEngine.value);
+        const url = search(address.value, searchEngine.value);
 
-	let wispUrl =
-		(location.protocol === "https:" ? "wss" : "ws") +
-		"://" +
-		location.host +
-		"/wisp/";
-	if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
-		await connection.setTransport("/libcurl/index.mjs", [
-			{ websocket: wispUrl },
-		]);
-	}
-	const frame = scramjet.createFrame();
-	frame.frame.id = "sj-frame";
-	document.body.appendChild(frame.frame);
-	frame.go(url);
+        let wispUrl =
+                (location.protocol === "https:" ? "wss" : "ws") +
+                "://" +
+                location.host +
+                "/wisp/";
+        if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+                await connection.setTransport("/libcurl/index.mjs", [
+                        { websocket: wispUrl },
+                ]);
+        }
+        const frame = scramjet.createFrame();
+        frame.frame.id = "sj-frame";
+        document.body.appendChild(frame.frame);
+        frame.go(url);
+
+        nav.style.display = "flex";
+
+        btnHome.onclick = () => {
+                frame.frame.remove();
+                nav.style.display = "none";
+        };
+        btnBack.onclick = () => {
+                frame.frame.contentWindow.history.back();
+        };
+        btnReload.onclick = () => {
+                frame.frame.contentWindow.location.reload();
+        };
+        btnForward.onclick = () => {
+                frame.frame.contentWindow.history.forward();
+        };
 });
