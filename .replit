@@ -1,6 +1,42 @@
 run = "cowsay Configure me!"
 entrypoint = "README.md"
+modules = ["nodejs-20"]
 
 [nix]
-channel = "stable-24_05"
+channel = "stable-24_11"
 packages = ["cowsay"]
+
+[agent]
+expertMode = true
+
+[[ports]]
+localPort = 8080
+externalPort = 80
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Unstable Stealth Server"
+
+[[workflows.workflow]]
+name = "Unstable Stealth Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd Scramjet-App && node src/index.js"
+waitForPort = 5000
