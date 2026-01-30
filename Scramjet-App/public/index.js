@@ -25,6 +25,7 @@ const btnHome = document.getElementById("sj-home");
 const btnBack = document.getElementById("sj-back");
 const btnReload = document.getElementById("sj-reload");
 const btnForward = document.getElementById("sj-forward");
+const btnFullscreen = document.getElementById("sj-fullscreen");
 
 const { ScramjetController } = $scramjetLoadController();
 
@@ -83,4 +84,20 @@ form.addEventListener("submit", async (event) => {
         btnForward.onclick = () => {
                 frame.frame.contentWindow.history.forward();
         };
+        btnFullscreen.onclick = () => {
+                nav.classList.toggle("hidden");
+                if (nav.classList.contains("hidden")) {
+                        // Show a small indicator or hint to come back?
+                        // For now, let's just make it toggle. 
+                        // To allow the user to exit fullscreen, we could add a listener for a key or just a hover area.
+                        // But let's keep it simple: clicking fullscreen hides it, and we might need a way to show it again.
+                        // Actually, let's make it so moving mouse to top shows it again if hidden.
+                }
+        };
+
+        window.addEventListener("mousemove", (e) => {
+                if (nav.classList.contains("hidden") && e.clientY < 50) {
+                        nav.classList.remove("hidden");
+                }
+        });
 });
