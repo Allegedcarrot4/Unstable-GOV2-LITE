@@ -40,3 +40,6 @@ outputType = "webview"
 task = "shell.exec"
 args = "cd Scramjet-App && node src/index.js"
 waitForPort = 5000
+
+[deployment]
+deploymentTarget = "cloudrun"
