@@ -86,7 +86,7 @@ function shutdown() {
         process.exit(0);
 }
 
-let port = 5000;
+let port = parseInt(process.env.PORT || "5000");
 
 fastify.listen({
         port: port,

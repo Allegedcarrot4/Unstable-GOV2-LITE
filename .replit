@@ -42,4 +42,5 @@ args = "cd Scramjet-App && node src/index.js"
 waitForPort = 5000
 
 [deployment]
-deploymentTarget = "cloudrun"
+deploymentTarget = "autoscale"
+run = ["node", "Scramjet-App/src/index.js"]
