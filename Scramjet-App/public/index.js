@@ -85,19 +85,30 @@ form.addEventListener("submit", async (event) => {
                 frame.frame.contentWindow.history.forward();
         };
         btnFullscreen.onclick = () => {
-                nav.classList.toggle("hidden");
-                if (nav.classList.contains("hidden")) {
-                        // Show a small indicator or hint to come back?
-                        // For now, let's just make it toggle. 
-                        // To allow the user to exit fullscreen, we could add a listener for a key or just a hover area.
-                        // But let's keep it simple: clicking fullscreen hides it, and we might need a way to show it again.
-                        // Actually, let's make it so moving mouse to top shows it again if hidden.
+                if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch((err) => {
+                                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                        });
+                        nav.classList.add("hidden");
+                } else {
+                        document.exitFullscreen();
+                        nav.classList.remove("hidden");
                 }
         };
 
-        window.addEventListener("mousemove", (e) => {
-                if (nav.classList.contains("hidden") && e.clientY < 50) {
+        document.addEventListener("fullscreenchange", () => {
+                if (!document.fullscreenElement) {
                         nav.classList.remove("hidden");
+                } else {
+                        nav.classList.add("hidden");
+                }
+        });
+
+        window.addEventListener("mousemove", (e) => {
+                if (document.fullscreenElement && e.clientY < 50) {
+                        nav.classList.remove("hidden");
+                } else if (document.fullscreenElement && e.clientY > 60) {
+                        nav.classList.add("hidden");
                 }
         });
 });
