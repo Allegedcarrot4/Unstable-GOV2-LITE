@@ -8,6 +8,9 @@ import fastifyStatic from "@fastify/static";
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const rammerhead = require("../../rammerhead/src/index.js");
 
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
 
@@ -56,6 +59,26 @@ fastify.register(fastifyStatic, {
         root: baremuxPath,
         prefix: "/baremux/",
         decorateReply: false,
+});
+
+// Rammerhead Integration
+const rhProxy = new rammerhead.RammerheadProxy({
+    logger: new rammerhead.RammerheadLogging(rammerhead.RammerheadLogging.NONE),
+    sessionStore: new rammerhead.RammerheadSessionMemoryStore(),
+    jsCache: new rammerhead.RammerheadJSMemCache(500) // Pass a default size to fix LRUCache error
+});
+
+fastify.addHook('onRequest', (req, reply, done) => {
+    if (req.url.startsWith('/rammerhead/')) {
+        // Handle Rammerhead requests
+        // Note: This is a complex manual integration because Rammerhead is built for express/http
+        // For a quick fix, we'll let it handle the underlying raw request if possible
+        const rawReq = req.raw;
+        const rawRes = reply.raw;
+        rhProxy.handleRequest(rawReq, rawRes);
+        return; // Fastify will wait for the rawRes to be finished
+    }
+    done();
 });
 
 fastify.setNotFoundHandler((res, reply) => {

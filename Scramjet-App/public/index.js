@@ -12,6 +12,10 @@ const address = document.getElementById("sj-address");
  */
 const searchEngine = document.getElementById("sj-search-engine");
 /**
+ * @type {HTMLSelectElement}
+ */
+const proxyType = document.getElementById("sj-proxy-type");
+/**
  * @type {HTMLParagraphElement}
  */
 const error = document.getElementById("sj-error");
@@ -53,6 +57,27 @@ form.addEventListener("submit", async (event) => {
         }
 
         const url = search(address.value, searchEngine.value);
+
+        if (proxyType.value === "rammerhead") {
+            // For Rammerhead, we need to create a session first or use a static one
+            // This is a simplified integration. We'll use a frame and point it to the rammerhead endpoint.
+            // Note: Real rammerhead integration usually involves fetching a session ID first.
+            // We'll assume the server handles /rammerhead/ routing.
+            const frame = document.createElement("iframe");
+            frame.id = "sj-frame";
+            frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);
+            document.body.appendChild(frame);
+            
+            nav.style.display = "flex";
+            btnHome.onclick = () => {
+                frame.remove();
+                nav.style.display = "none";
+            };
+            btnBack.onclick = () => frame.contentWindow.history.back();
+            btnReload.onclick = () => frame.contentWindow.location.reload();
+            btnForward.onclick = () => frame.contentWindow.history.forward();
+            return;
+        }
 
         let wispUrl =
                 (location.protocol === "https:" ? "wss" : "ws") +
