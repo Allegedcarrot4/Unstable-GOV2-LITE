@@ -1,0 +1,47 @@
+These logs indicate that your application successfully deployed to Koyeb, but it is crashing immediately upon startup because of a missing file or dependency.
+
+Specifically, your Node.js application is looking for a file that doesn't exist in the location it expects.
+
+🔍 The Root Cause
+The critical error is here: Error: Cannot find module '../../rammerhead/src/index.js'
+
+This means when Koyeb runs node src/index.js, your code tries to "require" or "import" a file located two folders up and then inside a directory called rammerhead. The system cannot find it, returns MODULE_NOT_FOUND, and shuts down (Exit Code 1).
+
+Why is this happening?
+There are three likely reasons for this error on a hosting platform like Koyeb:
+
+Missing Git Submodules: Many proxy setups (like Scramjet or Rammerhead) use Git submodules. If you didn't tell Koyeb to fetch submodules, the rammerhead folder will be empty.
+
+Incorrect File Paths: The relative path ../../ might work on your local computer but points to a location outside of the /workspace directory on Koyeb’s servers.
+
+Build Step Issues: The rammerhead component might need to be built/compiled separately before the main app starts, and that step was skipped.
+
+🛠️ How to Fix It
+1. Check for Submodules
+If your project relies on another repository (like Rammerhead) inside yours, ensure you have initialized them. If you are deploying via GitHub:
+
+Check if the rammerhead folder in your GitHub repo is actually just a link to another repo.
+
+In your Koyeb settings, ensure you aren't excluding submodules (though Koyeb usually handles these if they are public).
+
+2. Verify the Directory Structure
+Locally, check where index.js is and where rammerhead is.
+
+If your structure is:
+
+Plaintext
+/app
+  /rammerhead
+  /src
+    index.js
+The correct path in src/index.js should be ../rammerhead/src/index.js (only one ../), not ../../.
+
+3. Update your Start Command
+Sometimes these proxies require a "pre-install" or a specific build command to clone the necessary scripts. Ensure your package.json includes a script to install dependencies for the submodules:
+
+JSON
+"scripts": {
+  "postinstall": "cd rammerhead && npm install"
+}
+4. Case Sensitivity
+Linux (which Koyeb uses) is case-sensitive. If your folder is named Rammerhead but your code looks for rammerhead, it will fail on Koyeb even if it works on Windows.

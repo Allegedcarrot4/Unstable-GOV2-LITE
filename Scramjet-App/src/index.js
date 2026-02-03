@@ -11,6 +11,7 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const rammerhead = require("../../rammerhead/src/index.js");
+const path = require("path");
 
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
 
