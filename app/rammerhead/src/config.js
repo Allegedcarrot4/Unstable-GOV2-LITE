@@ -32,13 +32,13 @@ module.exports = {
     // },
 
     // enforce a password for creating new sessions. set to null to disable
-    password: 'sharkie4life',
+    password: null,
 
     // disable or enable localStorage sync (turn off if clients send over huge localStorage data, resulting in huge memory usages)
     disableLocalStorageSync: false,
 
     // restrict sessions to be only used per IP
-    restrictSessionToIP: true,
+    restrictSessionToIP: false,
 
     // caching options for js rewrites. (disk caching not recommended for slow HDD disks)
     // recommended: 50mb for memory, 5gb for disk
@@ -63,7 +63,12 @@ module.exports = {
     //     // 'x-frame-options': (originalHeaderValue) => '',
     //     'x-frame-options': null, // set to null to tell rammerhead that you want to delete it
     // },
-    rewriteServerHeaders: {},
+    rewriteServerHeaders: {
+        'x-frame-options': null,
+        'content-security-policy': null,
+        'content-security-policy-report-only': null,
+        'x-content-type-options': null
+    },
 
     //// SESSION STORE CONFIG ////
 

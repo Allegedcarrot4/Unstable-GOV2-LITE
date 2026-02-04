@@ -116,26 +116,48 @@ footer a:hover {
 }
 
 .proxy-select-wrapper {
-    margin-right: 10px;
+    margin-right: 15px;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 #sj-proxy-type {
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #888;
+    padding: 0 20px;
+    height: 48px;
+    border-radius: 24px;
     outline: none;
     cursor: pointer;
     font-family: inherit;
-    transition: all 0.3s;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    appearance: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 140px;
+    text-align: center;
 }
 
 #sj-proxy-type:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+#sj-proxy-type:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+#sj-proxy-type option {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 10px;
 }
 
 #sj-nav {
