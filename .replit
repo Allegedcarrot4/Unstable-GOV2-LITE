@@ -23,19 +23,19 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Koyeb App Server"
+args = "Unstable Stealth Unified Server"
 
 [[workflows.workflow]]
-name = "Koyeb App Server"
+name = "Unstable Stealth Unified Server"
 author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd app && npm install && node src/index.js"
+args = "cd app && npm install && npm start"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [deployment]
 deploymentTarget = "autoscale"
