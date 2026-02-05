@@ -74,7 +74,7 @@ fastify.addHook('onRequest', (req, reply, done) => {
         // For a quick fix, we'll let it handle the underlying raw request if possible
         const rawReq = req.raw;
         const rawRes = reply.raw;
-        rhProxy.handleRequest(rawReq, rawRes);
+        rhProxy._onRequest(rawReq, rawRes); // Call the internal handler directly
         return; // Fastify will wait for the rawRes to be finished
     }
     done();

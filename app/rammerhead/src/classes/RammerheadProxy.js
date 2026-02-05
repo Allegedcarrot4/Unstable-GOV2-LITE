@@ -328,7 +328,9 @@ class RammerheadProxy extends Proxy {
      * @param {ServerInfo} serverInfo
      */
     async _onRequest(req, res, serverInfo) {
-        serverInfo = this._rewriteServerInfo(req);
+        if (!serverInfo) {
+            serverInfo = this._rewriteServerInfo(req);
+        }
 
         const isWebsocket = res instanceof stream.Duplex;
 
