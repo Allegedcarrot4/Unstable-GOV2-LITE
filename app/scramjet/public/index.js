@@ -30,6 +30,34 @@ const btnBack = document.getElementById("sj-back");
 const btnReload = document.getElementById("sj-reload");
 const btnForward = document.getElementById("sj-forward");
 const btnFullscreen = document.getElementById("sj-fullscreen");
+const btnLogs = document.getElementById("sj-logs");
+const logConsole = document.getElementById("sj-log-console");
+const logContent = document.getElementById("sj-log-content");
+
+function addLog(msg, type = "info") {
+    const entry = document.createElement("div");
+    entry.style.color = type === "error" ? "#f44" : (type === "warn" ? "#ff0" : "#0f0");
+    entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    logContent.appendChild(entry);
+    logConsole.scrollTop = logConsole.scrollHeight;
+    console.log(msg);
+}
+
+// Intercept console.log to show in our UI
+const oldLog = console.log;
+console.log = function(...args) {
+    oldLog.apply(console, args);
+    addLog(args.join(" "));
+};
+const oldError = console.error;
+console.error = function(...args) {
+    oldError.apply(console, args);
+    addLog(args.join(" "), "error");
+};
+
+btnLogs.onclick = () => {
+    logConsole.style.display = logConsole.style.display === "none" ? "block" : "none";
+};
 
 const { ScramjetController } = $scramjetLoadController();
 
@@ -59,23 +87,35 @@ form.addEventListener("submit", async (event) => {
         const url = search(address.value, searchEngine.value);
 
         if (proxyType.value === "rammerhead") {
+            addLog("Initializing Rammerhead session...");
             const frame = document.createElement("iframe");
             frame.id = "sj-frame";
             frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);
+            addLog("Loading frame: " + frame.src);
             document.body.appendChild(frame);
             
             nav.style.display = "flex";
             btnHome.onclick = () => {
+                addLog("Returning home");
                 frame.remove();
                 nav.style.display = "none";
             };
-            btnBack.onclick = () => frame.contentWindow.history.back();
-            btnReload.onclick = () => frame.contentWindow.location.reload();
-            btnForward.onclick = () => frame.contentWindow.history.forward();
+            btnBack.onclick = () => {
+                addLog("Navigating back");
+                frame.contentWindow.history.back();
+            };
+            btnReload.onclick = () => {
+                addLog("Reloading page");
+                frame.contentWindow.location.reload();
+            };
+            btnForward.onclick = () => {
+                addLog("Navigating forward");
+                frame.contentWindow.history.forward();
+            };
             btnFullscreen.onclick = () => {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch((err) => {
-                        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                        addLog("Fullscreen error: " + err.message, "error");
                     });
                     nav.classList.add("hidden");
                 } else {
@@ -86,6 +126,7 @@ form.addEventListener("submit", async (event) => {
             return;
         }
 
+        addLog("Initializing Scramjet session...");
         let wispUrl =
                 (location.protocol === "https:" ? "wss" : "ws") +
                 "://" +
