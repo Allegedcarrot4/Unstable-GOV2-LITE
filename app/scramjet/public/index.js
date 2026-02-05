@@ -59,10 +59,6 @@ form.addEventListener("submit", async (event) => {
         const url = search(address.value, searchEngine.value);
 
         if (proxyType.value === "rammerhead") {
-            // For Rammerhead, we need to create a session first or use a static one
-            // This is a simplified integration. We'll use a frame and point it to the rammerhead endpoint.
-            // Note: Real rammerhead integration usually involves fetching a session ID first.
-            // We'll assume the server handles /rammerhead/ routing.
             const frame = document.createElement("iframe");
             frame.id = "sj-frame";
             frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);
@@ -76,6 +72,17 @@ form.addEventListener("submit", async (event) => {
             btnBack.onclick = () => frame.contentWindow.history.back();
             btnReload.onclick = () => frame.contentWindow.location.reload();
             btnForward.onclick = () => frame.contentWindow.history.forward();
+            btnFullscreen.onclick = () => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch((err) => {
+                        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                    });
+                    nav.classList.add("hidden");
+                } else {
+                    document.exitFullscreen();
+                    nav.classList.remove("hidden");
+                }
+            };
             return;
         }
 

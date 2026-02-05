@@ -455,7 +455,7 @@ class RammerheadProxy extends Proxy {
     _setupRammerheadServiceRoutes() {
         this.GET('/rammerhead.js', {
             content: fs.readFileSync(
-                path.join(__dirname, '../client/rammerhead' + (process.env.DEVELOPMENT ? '.js' : '.min.js'))
+                path.join(__dirname, '../client/rammerhead' + (fs.existsSync(path.join(__dirname, '../client/rammerhead.min.js')) ? '.min.js' : '.js'))
             ),
             contentType: 'application/x-javascript'
         });

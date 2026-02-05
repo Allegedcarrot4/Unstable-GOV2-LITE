@@ -64,18 +64,27 @@ fastify.register(fastifyStatic, {
 const rhProxy = new rammerhead.RammerheadProxy({
     logger: new rammerhead.RammerheadLogging(rammerhead.RammerheadLogging.NONE),
     sessionStore: new rammerhead.RammerheadSessionMemoryStore(),
-    jsCache: new rammerhead.RammerheadJSMemCache(500) // Pass a default size to fix LRUCache error
+    jsCache: new rammerhead.RammerheadJSMemCache(500),
+    crossDomainPort: null // Use single port mode for simpler integration
 });
 
 fastify.addHook('onRequest', (req, reply, done) => {
     if (req.url.startsWith('/rammerhead/')) {
-        // Handle Rammerhead requests
-        // Note: This is a complex manual integration because Rammerhead is built for express/http
-        // For a quick fix, we'll let it handle the underlying raw request if possible
         const rawReq = req.raw;
         const rawRes = reply.raw;
-        rhProxy._onRequest(rawReq, rawRes); // Call the internal handler directly
-        return; // Fastify will wait for the rawRes to be finished
+        
+        // Simple session creation for the /rammerhead/session/new route
+        if (req.url.startsWith('/rammerhead/session/new')) {
+            const url = new URL(req.url, `http://${req.headers.host}`).searchParams.get('url');
+            const session = new rammerhead.RammerheadSession();
+            rhProxy.sessionStore.add(session);
+            const rammerheadUrl = `/rammerhead/${session.id}/${url}`;
+            reply.redirect(rammerheadUrl);
+            return;
+        }
+
+        rhProxy._onRequest(rawReq, rawRes);
+        return;
     }
     done();
 });
