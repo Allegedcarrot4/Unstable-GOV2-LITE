@@ -328,9 +328,7 @@ class RammerheadProxy extends Proxy {
      * @param {ServerInfo} serverInfo
      */
     async _onRequest(req, res, serverInfo) {
-        if (!serverInfo) {
-            serverInfo = this._rewriteServerInfo(req);
-        }
+        serverInfo = this._rewriteServerInfo(req);
 
         const isWebsocket = res instanceof stream.Duplex;
 
@@ -455,7 +453,7 @@ class RammerheadProxy extends Proxy {
     _setupRammerheadServiceRoutes() {
         this.GET('/rammerhead.js', {
             content: fs.readFileSync(
-                path.join(__dirname, '../client/rammerhead' + (fs.existsSync(path.join(__dirname, '../client/rammerhead.min.js')) ? '.min.js' : '.js'))
+                path.join(__dirname, '../client/rammerhead' + (process.env.DEVELOPMENT ? '.js' : '.min.js'))
             ),
             contentType: 'application/x-javascript'
         });
