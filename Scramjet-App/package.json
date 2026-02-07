@@ -12,7 +12,7 @@
                 "format": "prettier --write .",
                 "lint": "eslint ./src/",
                 "lint:fix": "eslint ./src/ --fix",
-                "postinstall": "cd rammerhead && npm install --ignore-scripts && npm install"
+                "postinstall": "cd ../rammerhead && npm install"
         },
         "keywords": [
                 "proxy"
