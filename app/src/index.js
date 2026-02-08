@@ -62,6 +62,11 @@ fastify.register(fastifyStatic, {
         decorateReply: false,
 });
 
+// Dynamic routing for Scramjet embedding
+fastify.get("/scramjet/:url", (req, reply) => {
+    return reply.type("text/html").sendFile("index.html");
+});
+
 // Rammerhead Integration
 const rhProxy = new rammerhead.RammerheadProxy({
     logger: new rammerhead.RammerheadLogging(rammerhead.RammerheadLogging.NONE),

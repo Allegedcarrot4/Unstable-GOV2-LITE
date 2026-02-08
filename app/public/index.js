@@ -45,95 +45,111 @@ scramjet.init();
 
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 
+async function startProxy(url) {
+    try {
+        await registerSW();
+    } catch (err) {
+        error.textContent = "Failed to register service worker.";
+        errorCode.textContent = err.toString();
+        throw err;
+    }
+
+    let wispUrl =
+        (location.protocol === "https:" ? "wss" : "ws") +
+        "://" +
+        location.host +
+        "/wisp/";
+    if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+        await connection.setTransport("/libcurl/index.mjs", [
+            { websocket: wispUrl },
+        ]);
+    }
+    const frame = scramjet.createFrame();
+    frame.frame.id = "sj-frame";
+    document.body.appendChild(frame.frame);
+    frame.go(url);
+
+    nav.style.display = "flex";
+
+    btnHome.onclick = () => {
+        frame.frame.remove();
+        nav.style.display = "none";
+        if (window.location.pathname.startsWith("/scramjet/")) {
+            window.history.pushState({}, "", "/");
+        }
+    };
+    btnBack.onclick = () => {
+        frame.frame.contentWindow.history.back();
+    };
+    btnReload.onclick = () => {
+        frame.frame.contentWindow.location.reload();
+    };
+    btnForward.onclick = () => {
+        frame.frame.contentWindow.history.forward();
+    };
+    btnFullscreen.onclick = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch((err) => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+            nav.classList.add("hidden");
+        } else {
+            document.exitFullscreen();
+            nav.classList.remove("hidden");
+        }
+    };
+
+    document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+            nav.classList.remove("hidden");
+        } else {
+            nav.classList.add("hidden");
+        }
+    });
+
+    window.addEventListener("mousemove", (e) => {
+        if (document.fullscreenElement && e.clientY < 50) {
+            nav.classList.remove("hidden");
+        } else if (document.fullscreenElement && e.clientY > 60) {
+            nav.classList.add("hidden");
+        }
+    });
+}
+
+window.addEventListener("load", async () => {
+    const path = window.location.pathname;
+    if (path.startsWith("/scramjet/")) {
+        const encodedUrl = path.substring("/scramjet/".length);
+        const url = decodeURIComponent(encodedUrl);
+        if (url) {
+            setTimeout(async () => {
+                await startProxy(url);
+            }, 500);
+        }
+    }
+});
+
 form.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        try {
-                await registerSW();
-        } catch (err) {
-                error.textContent = "Failed to register service worker.";
-                errorCode.textContent = err.toString();
-                throw err;
-        }
+    const url = search(address.value, searchEngine.value);
 
-        const url = search(address.value, searchEngine.value);
-
-        if (proxyType.value === "rammerhead") {
-            // For Rammerhead, we need to create a session first or use a static one
-            // This is a simplified integration. We'll use a frame and point it to the rammerhead endpoint.
-            // Note: Real rammerhead integration usually involves fetching a session ID first.
-            // We'll assume the server handles /rammerhead/ routing.
-            const frame = document.createElement("iframe");
-            frame.id = "sj-frame";
-            frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);
-            document.body.appendChild(frame);
-            
-            nav.style.display = "flex";
-            btnHome.onclick = () => {
-                frame.remove();
-                nav.style.display = "none";
-            };
-            btnBack.onclick = () => frame.contentWindow.history.back();
-            btnReload.onclick = () => frame.contentWindow.location.reload();
-            btnForward.onclick = () => frame.contentWindow.history.forward();
-            return;
-        }
-
-        let wispUrl =
-                (location.protocol === "https:" ? "wss" : "ws") +
-                "://" +
-                location.host +
-                "/wisp/";
-        if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
-                await connection.setTransport("/libcurl/index.mjs", [
-                        { websocket: wispUrl },
-                ]);
-        }
-        const frame = scramjet.createFrame();
-        frame.frame.id = "sj-frame";
-        document.body.appendChild(frame.frame);
-        frame.go(url);
-
+    if (proxyType.value === "rammerhead") {
+        const frame = document.createElement("iframe");
+        frame.id = "sj-frame";
+        frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);
+        document.body.appendChild(frame);
+        
         nav.style.display = "flex";
-
         btnHome.onclick = () => {
-                frame.frame.remove();
-                nav.style.display = "none";
+            frame.remove();
+            nav.style.display = "none";
         };
-        btnBack.onclick = () => {
-                frame.frame.contentWindow.history.back();
-        };
-        btnReload.onclick = () => {
-                frame.frame.contentWindow.location.reload();
-        };
-        btnForward.onclick = () => {
-                frame.frame.contentWindow.history.forward();
-        };
-        btnFullscreen.onclick = () => {
-                if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch((err) => {
-                                console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-                        });
-                        nav.classList.add("hidden");
-                } else {
-                        document.exitFullscreen();
-                        nav.classList.remove("hidden");
-                }
-        };
+        btnBack.onclick = () => frame.contentWindow.history.back();
+        btnReload.onclick = () => frame.contentWindow.location.reload();
+        btnForward.onclick = () => frame.contentWindow.history.forward();
+        return;
+    }
 
-        document.addEventListener("fullscreenchange", () => {
-                if (!document.fullscreenElement) {
-                        nav.classList.remove("hidden");
-                } else {
-                        nav.classList.add("hidden");
-                }
-        });
-
-        window.addEventListener("mousemove", (e) => {
-                if (document.fullscreenElement && e.clientY < 50) {
-                        nav.classList.remove("hidden");
-                } else if (document.fullscreenElement && e.clientY > 60) {
-                        nav.classList.add("hidden");
-                }
-        });
+    await startProxy(url);
 });
