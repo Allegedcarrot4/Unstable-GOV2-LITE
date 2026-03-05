@@ -44,6 +44,7 @@ fastify.register(fastifyStatic, {
         decorateReply: true,
 });
 
+// Full Scramjet proxy mode support
 fastify.register(fastifyStatic, {
         root: scramjetPath,
         prefix: "/scram/",
