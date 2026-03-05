@@ -94,63 +94,42 @@ footer a:hover {
         margin-bottom: 40px;
 }
 
-/* Proxy Toggle Styling */
-.stealth-toggle {
+/* Proxy Select Styling */
+.proxy-select-wrapper {
+    margin-right: 15px;
     display: flex;
-    position: relative;
+    align-items: center;
+}
+
+#sj-proxy-type {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 30px;
-    padding: 4px;
-    margin-right: 15px;
-    height: 44px;
-    align-items: center;
-    overflow: hidden;
-}
-
-.stealth-toggle input {
-    display: none;
-}
-
-.stealth-toggle label {
-    position: relative;
-    z-index: 2;
-    padding: 0 18px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #555;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    outline: none;
     cursor: pointer;
-    transition: color 0.3s ease;
+    font-family: inherit;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23555' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px;
 }
 
-.stealth-toggle input:checked + label {
+#sj-proxy-type:hover, #sj-proxy-type:focus {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#sj-proxy-type option {
+    background: #0a0a0a;
     color: #fff;
-}
-
-.toggle-slider {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 90px; /* Approximate width of one label */
-    height: calc(100% - 8px);
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 25px;
-    z-index: 1;
-    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* Position slider based on checked input */
-.stealth-toggle input[value="scramjet"]:checked ~ .toggle-slider {
-    transform: translateX(0);
-}
-
-.stealth-toggle input[value="rammerhead"]:checked ~ .toggle-slider {
-    transform: translateX(85px); /* Adjusted for label width */
 }
 
 #sj-address {

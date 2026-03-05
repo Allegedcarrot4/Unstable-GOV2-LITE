@@ -11,10 +11,10 @@ const address = document.getElementById("sj-address");
  * @type {HTMLInputElement}
  */
 const searchEngine = document.getElementById("sj-search-engine");
-
-function getProxyType() {
-    return document.querySelector('input[name="proxy-type"]:checked').value;
-}
+/**
+ * @type {HTMLSelectElement}
+ */
+const proxyType = document.getElementById("sj-proxy-type");
 
 /**
  * @type {HTMLParagraphElement}
@@ -135,7 +135,7 @@ form.addEventListener("submit", async (event) => {
 
     const url = search(address.value, searchEngine.value);
 
-    if (getProxyType() === "rammerhead") {
+    if (proxyType.value === "rammerhead") {
         const frame = document.createElement("iframe");
         frame.id = "sj-frame";
         frame.src = "/rammerhead/session/new?url=" + encodeURIComponent(url);

@@ -35,14 +35,11 @@
                                 value="https://www.google.com/search?q=%s"
                                 type="hidden"
                         />
-                        <div class="stealth-toggle">
-                            <input type="radio" id="proxy-scramjet" name="proxy-type" value="scramjet" checked>
-                            <label for="proxy-scramjet">Scramjet</label>
-                            
-                            <input type="radio" id="proxy-rammerhead" name="proxy-type" value="rammerhead">
-                            <label for="proxy-rammerhead">Rammerhead</label>
-                            
-                            <div class="toggle-slider"></div>
+                        <div class="proxy-select-wrapper">
+                            <select id="sj-proxy-type">
+                                <option value="scramjet">Scramjet</option>
+                                <option value="rammerhead">Rammerhead</option>
+                            </select>
                         </div>
                         <input id="sj-address" type="text" placeholder="Search the web freely" />
                 </form>
