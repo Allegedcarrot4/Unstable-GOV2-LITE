@@ -94,6 +94,65 @@ footer a:hover {
         margin-bottom: 40px;
 }
 
+/* Proxy Toggle Styling */
+.stealth-toggle {
+    display: flex;
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    padding: 4px;
+    margin-right: 15px;
+    height: 44px;
+    align-items: center;
+    overflow: hidden;
+}
+
+.stealth-toggle input {
+    display: none;
+}
+
+.stealth-toggle label {
+    position: relative;
+    z-index: 2;
+    padding: 0 18px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stealth-toggle input:checked + label {
+    color: #fff;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 90px; /* Approximate width of one label */
+    height: calc(100% - 8px);
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 25px;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Position slider based on checked input */
+.stealth-toggle input[value="scramjet"]:checked ~ .toggle-slider {
+    transform: translateX(0);
+}
+
+.stealth-toggle input[value="rammerhead"]:checked ~ .toggle-slider {
+    transform: translateX(85px); /* Adjusted for label width */
+}
+
 #sj-address {
         background: rgba(255, 255, 255, 0.03);
         font-family: inherit;
