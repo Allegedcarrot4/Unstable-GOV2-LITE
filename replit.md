@@ -28,6 +28,8 @@ Preferred communication style: Simple, everyday language.
 - **Service Worker**: Registers a service worker (sw.js) that intercepts fetch requests and routes them through Scramjet
 - **ScramjetController**: Client-side JavaScript controller that initializes the proxy and manages iframe-based browsing
 - **Search Handling**: URL/search query parser that determines whether input is a URL or search term
+- **Tab System**: Browser-like tab interface with tab creation, switching, and closure (tabs.js)
+- **Dual Proxy Support**: Dropdown selector for choosing between Scramjet and Rammerhead proxy engines
 
 ### Static File Routes
 - `/` - Public directory (HTML, CSS, JS)
@@ -40,6 +42,24 @@ Preferred communication style: Simple, everyday language.
 - Hostname blacklist support via regex patterns
 - UDP streams disabled by default
 
+## Key Features
+
+### Dual Proxy Engines
+- **Scramjet**: High-performance interception-based proxy with WASM support
+- **Rammerhead**: Alternative proxy engine for compatibility and redundancy
+- Users can select which proxy to use via dropdown menu
+
+### Browser-Like Interface
+- **Tab Support**: Open multiple tabs to browse different websites simultaneously
+- **Navigation Controls**: Home, Back, Reload, Forward buttons in a sleek top bar
+- **Fullscreen Mode**: Hide navigation for immersive browsing experience
+- **URL Embedding**: Share direct proxied URLs (e.g., `/scramjet/https%3A%2F%2Fwww.youtube.com`)
+
+### UI Design
+- **Stealth Aesthetic**: Minimalist dark theme with subtle transparency and animations
+- **Responsive Layout**: Clean, modern design optimized for desktop browsing
+- **Cross-Origin Support**: Fully embedded with frame-ancestors * for external embedding
+
 ## External Dependencies
 
 ### NPM Packages
@@ -48,6 +68,7 @@ Preferred communication style: Simple, everyday language.
 - **@mercuryworkshop/wisp-js**: WebSocket-based tunneling protocol server
 - **@mercuryworkshop/libcurl-transport**: Alternative HTTP transport using libcurl/WASM
 - **ws**: WebSocket library for Node.js
+- **Rammerhead**: Alternative proxy engine (included locally)
 
 ### Runtime Requirements
 - Node.js 16.x or higher

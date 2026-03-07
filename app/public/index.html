@@ -17,12 +17,19 @@
                 <script src="register-sw.js" defer></script>
                 <script src="search.js" defer></script>
                 <script src="index.js" defer></script>
+                <script src="tabs.js" defer></script>
         </head>
 
         <body>
-                <div class="flex-center logo-wrapper header-center">
-                        <h1>Unstable Stealth</h1>
+                <div id="sj-tabs-bar" style="display: none;">
+                        <div id="sj-tabs-container"></div>
+                        <button id="sj-new-tab" title="New Tab">+</button>
                 </div>
+
+                <div id="sj-home-view">
+                        <div class="flex-center logo-wrapper header-center">
+                                <h1>Unstable Stealth</h1>
+                        </div>
                 <div class="flex-center desc left-margin">
                         <p>
                                 A minimalist, high-performance web proxy designed for maximum stealth and speed.
@@ -66,23 +73,26 @@
                         </button>
                 </div>
 
-                <footer>
-                        <div>
-                                <a
-                                        title="The Mercury Workshop GitHub organization"
-                                        href="https://github.com/MercuryWorkshop"
-                                        >Mercury Workshop</a
-                                >
-                                <a
-                                        title="The example demo app for Scramjet"
-                                        href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-                                        >GitHub</a
-                                >
-                                <a title="License information" href="credits.html">Credits</a>
-                        </div>
-                        <div>
-                                <span>Unstable Stealth &copy; 2026</span>
-                        </div>
-                </footer>
+                        <footer>
+                                <div>
+                                        <a
+                                                title="The Mercury Workshop GitHub organization"
+                                                href="https://github.com/MercuryWorkshop"
+                                                >Mercury Workshop</a
+                                        >
+                                        <a
+                                                title="The example demo app for Scramjet"
+                                                href="https://github.com/MercuryWorkshop/Scramjet-Demo"
+                                                >GitHub</a
+                                        >
+                                        <a title="License information" href="credits.html">Credits</a>
+                                </div>
+                                <div>
+                                        <span>Unstable Stealth &copy; 2026</span>
+                                </div>
+                        </footer>
+                </div>
+
+                <div id="sj-tabs-content"></div>
         </body>
 </html>
