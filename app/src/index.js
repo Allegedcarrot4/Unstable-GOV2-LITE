@@ -11,9 +11,9 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const rammerhead = require("../rammerhead/src/index.js");
+const setupRoutes = require("../rammerhead/src/server/setupRoutes");
+const setupPipeline = require("../rammerhead/src/server/setupPipeline");
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
-
-// Wisp Configuration: Refer to the documentation at https://www.npmjs.com/package/@mercuryworkshop/wisp-js
 
 logging.set_level(logging.NONE);
 Object.assign(wisp.options, {
@@ -21,6 +21,22 @@ Object.assign(wisp.options, {
         hostname_blacklist: [/example\.com/],
         dns_servers: ["1.1.1.3", "1.0.0.3"],
 });
+
+// Rammerhead proxy — dontListen so we handle requests manually
+const rhLogger = new rammerhead.RammerheadLogging({ logLevel: "disabled" });
+const rhSessionStore = new rammerhead.RammerheadSessionMemoryStore();
+const rhProxy = new rammerhead.RammerheadProxy({
+    logger: rhLogger,
+    loggerGetIP: (req) => req.socket?.remoteAddress || "unknown",
+    dontListen: true,
+    jsCache: new rammerhead.RammerheadJSMemCache(500),
+});
+rhSessionStore.attachToProxy(rhProxy);
+setupPipeline(rhProxy, rhSessionStore);
+setupRoutes(rhProxy, rhSessionStore, rhLogger);
+
+// Regex to detect proxied session URLs (UUID path prefix)
+const rhSessionRegex = /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/|$)/;
 
 const fastify = Fastify({
         serverFactory: (handler) => {
@@ -33,10 +49,25 @@ const fastify = Fastify({
                                 handler(req, res);
                         })
                         .on("upgrade", (req, socket, head) => {
-                                if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
-                                else socket.end();
+                                if (req.url.endsWith("/wisp/")) {
+                                        wisp.routeRequest(req, socket, head);
+                                } else if (rhSessionRegex.test(req.url)) {
+                                        rhProxy._onUpgradeRequest(req, socket, head);
+                                } else {
+                                        socket.end();
+                                }
                         });
         },
+});
+
+// Intercept Rammerhead routes before Fastify handles them
+fastify.addHook("onRequest", (req, reply, done) => {
+    const raw = req.raw;
+    if (rhProxy.checkIsRoute(raw) || rhSessionRegex.test(raw.url)) {
+        rhProxy._onRequest(raw, reply.raw);
+        return; // response handled by Rammerhead, don't call done()
+    }
+    done();
 });
 
 fastify.register(fastifyStatic, {
@@ -44,7 +75,6 @@ fastify.register(fastifyStatic, {
         decorateReply: true,
 });
 
-// Full Scramjet proxy mode support
 fastify.register(fastifyStatic, {
         root: scramjetPath,
         prefix: "/scram/",
@@ -68,35 +98,12 @@ fastify.get("/scramjet/:url", (req, reply) => {
     return reply.type("text/html").sendFile("index.html");
 });
 
-// Rammerhead Integration
-const rhProxy = new rammerhead.RammerheadProxy({
-    logger: new rammerhead.RammerheadLogging(rammerhead.RammerheadLogging.NONE),
-    sessionStore: new rammerhead.RammerheadSessionMemoryStore(),
-    jsCache: new rammerhead.RammerheadJSMemCache(500) // Pass a default size to fix LRUCache error
-});
-
-fastify.addHook('onRequest', (req, reply, done) => {
-    if (req.url.startsWith('/rammerhead/')) {
-        // Handle Rammerhead requests
-        // Note: This is a complex manual integration because Rammerhead is built for express/http
-        // For a quick fix, we'll let it handle the underlying raw request if possible
-        const rawReq = req.raw;
-        const rawRes = reply.raw;
-        rhProxy.handleRequest(rawReq, rawRes);
-        return; // Fastify will wait for the rawRes to be finished
-    }
-    done();
-});
-
-fastify.setNotFoundHandler((res, reply) => {
+fastify.setNotFoundHandler((req, reply) => {
         return reply.code(404).type("text/html").sendFile("404.html");
 });
 
 fastify.server.on("listening", () => {
         const address = fastify.server.address();
-
-        // by default we are listening on 0.0.0.0 (every interface)
-        // we just need to list a few
         console.log("Listening on:");
         console.log(`\thttp://localhost:${address.port}`);
         console.log(`\thttp://${hostname()}:${address.port}`);

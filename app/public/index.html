@@ -20,70 +20,62 @@
         </head>
 
         <body>
+                <!-- Tab bar with nav controls on the right -->
                 <div id="sj-tabs-bar" style="display: none;">
                         <div id="sj-tabs-container"></div>
                         <button id="sj-new-tab" title="New Tab">+</button>
+                        <div id="sj-tab-nav">
+                                <button id="sj-back" title="Go Back">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                                </button>
+                                <button id="sj-forward" title="Go Forward">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                                </button>
+                                <button id="sj-reload" title="Reload">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                                </button>
+                                <button id="sj-new-blank" title="Open in New Tab (about:blank)">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                                </button>
+                                <button id="sj-fullscreen" title="Fullscreen">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                                </button>
+                        </div>
                 </div>
 
                 <div id="sj-home-view">
                         <div class="flex-center logo-wrapper header-center">
                                 <h1>Unstable Stealth</h1>
                         </div>
-                <div class="flex-center desc left-margin">
-                        <p>
-                                A minimalist, high-performance web proxy designed for maximum stealth and speed.
-                        </p>
-                </div>
-
-                <form id="sj-form" class="flex-center">
-                        <input
-                                id="sj-search-engine"
-                                value="https://www.google.com/search?q=%s"
-                                type="hidden"
-                        />
-                        <div class="proxy-select-wrapper">
-                            <select id="sj-proxy-type">
-                                <option value="scramjet">Scramjet</option>
-                                <option value="rammerhead">Rammerhead</option>
-                            </select>
+                        <div class="flex-center desc left-margin">
+                                <p>
+                                        A minimalist, high-performance web proxy designed for maximum stealth and speed.
+                                </p>
                         </div>
-                        <input id="sj-address" type="text" placeholder="Search the web freely" />
-                </form>
-                <div class="desc left-margin">
-                        <p id="sj-error"></p>
-                        <pre id="sj-error-code"></pre>
-                </div>
 
-                <div id="sj-nav" class="flex-center" style="display: none;">
-                        <button id="sj-home" title="Home">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                        </button>
-                        <button id="sj-back" title="Back">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                        </button>
-                        <button id="sj-reload" title="Reload">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                        </button>
-                        <button id="sj-forward" title="Forward">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                        </button>
-                        <button id="sj-fullscreen" title="Fullscreen">
-                                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                        </button>
-                </div>
+                        <form id="sj-form" class="flex-center">
+                                <input
+                                        id="sj-search-engine"
+                                        value="https://www.google.com/search?q=%s"
+                                        type="hidden"
+                                />
+                                <div class="proxy-select-wrapper">
+                                    <select id="sj-proxy-type">
+                                        <option value="scramjet">Scramjet</option>
+                                        <option value="rammerhead">Rammerhead</option>
+                                    </select>
+                                </div>
+                                <input id="sj-address" type="text" placeholder="Search the web freely" />
+                        </form>
+                        <div class="desc left-margin">
+                                <p id="sj-error"></p>
+                                <pre id="sj-error-code"></pre>
+                        </div>
 
                         <footer>
                                 <div>
-                                        <a
-                                                title="The Mercury Workshop GitHub organization"
-                                                href="https://github.com/MercuryWorkshop"
-                                                >Mercury Workshop</a
-                                        >
-                                        <a
-                                                title="The example demo app for Scramjet"
-                                                href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-                                                >GitHub</a
-                                        >
+                                        <a title="The Mercury Workshop GitHub organization" href="https://github.com/MercuryWorkshop">Mercury Workshop</a>
+                                        <a title="The example demo app for Scramjet" href="https://github.com/MercuryWorkshop/Scramjet-Demo">GitHub</a>
                                         <a title="License information" href="credits.html">Credits</a>
                                 </div>
                                 <div>
