@@ -1,0 +1,106 @@
+[1G[0K⠙[1G[0K⠹[1G[0K⠸[1G[0K⠼[1G[0K
+> scramjet-demo@2.0.0 postinstall
+> cd rammerhead && npm install --ignore-scripts && npm install
+
+[1G[0K⠼[1G[0K[1G[0K⠙[1G[0K⠹[1G[0K⠸[1G[0K⠼[1G[0K⠴[1G[0K⠦[1G[0K
+removed 1 package, and audited 205 packages in 715ms
+[1G[0K⠦[1G[0K
+[1G[0K⠦[1G[0K21 packages are looking for funding
+[1G[0K⠦[1G[0K  run `npm fund` for details
+[1G[0K⠦[1G[0K
+[31m[1m18[22m[39m vulnerabilities (6 [33m[1mmoderate[22m[39m, 11 [31m[1mhigh[22m[39m, 1 [35m[1mcritical[22m[39m)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+[1G[0K⠦[1G[0K[1G[0K⠙[1G[0K⠹[1G[0K⠸[1G[0K⠼[1G[0K⠴[1G[0K⠦[1G[0K
+> rammerhead@1.2.64 preinstall
+> npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions
+
+[1G[0K⠦[1G[0K[1G[0K⠙[1G[0K⠹[1G[0K⠸[1G[0K⠼[1G[0K
+up to date, audited 206 packages in 618ms
+[1G[0K⠼[1G[0K
+[1G[0K⠼[1G[0K21 packages are looking for funding
+[1G[0K⠼[1G[0K  run `npm fund` for details
+[1G[0K⠼[1G[0K
+[31m[1m18[22m[39m vulnerabilities (6 [33m[1mmoderate[22m[39m, 11 [31m[1mhigh[22m[39m, 1 [35m[1mcritical[22m[39m)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+[1G[0K⠼[1G[0K[1G[0K⠙[1G[0K[1G[0K⠙[1G[0K[1G[0K⠙[1G[0K
+added 1 package, and audited 206 packages in 10s
+[1G[0K⠙[1G[0K
+[1G[0K⠙[1G[0K21 packages are looking for funding
+[1G[0K⠙[1G[0K  run `npm fund` for details
+[1G[0K⠙[1G[0K
+[31m[1m18[22m[39m vulnerabilities (6 [33m[1mmoderate[22m[39m, 11 [31m[1mhigh[22m[39m, 1 [35m[1mcritical[22m[39m)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+[1G[0K⠙[1G[0K[1G[0K⠙[1G[0K
+up to date, audited 209 packages in 12s
+[1G[0K⠙[1G[0K
+[1G[0K⠙[1G[0K73 packages are looking for funding
+[1G[0K⠙[1G[0K  run `npm fund` for details
+[1G[0K⠙[1G[0K
+[31m[1m5[22m[39m vulnerabilities (3 [33m[1mmoderate[22m[39m, 2 [31m[1mhigh[22m[39m)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+[1G[0K⠙[1G[0KListening on:
+	http://localhost:5000
+	http://455d70ecf0bc:5000
+	http://0.0.0.0:5000
+[2026-04-05T13:58:20.628Z] [TRAFFIC] ROUTE 127.0.0.1 /newsession
+[2026-04-05T13:58:20.628Z] [ERROR] (httpResponse.badRequest) 127.0.0.1 /newsession bad password
+[2026-04-05T13:58:20.666Z] [TRAFFIC] ROUTE 127.0.0.1 /newsession
+[2026-04-05T13:58:20.666Z] [ERROR] (httpResponse.badRequest) 127.0.0.1 /newsession bad password
+[2026-04-05T13:59:01.420Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T13:59:01.420Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:00:01.435Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:00:01.436Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:01:01.458Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:01:01.458Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:02:01.486Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:02:01.486Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:03:01.502Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:03:01.502Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:04:01.532Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:04:01.532Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:05:01.562Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:05:01.562Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:06:01.588Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:06:01.588Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:07:01.618Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:07:01.618Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:08:01.648Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:08:01.648Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:09:01.677Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:09:01.677Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
+[2026-04-05T14:10:01.702Z] [DEBUG] (MemoryStore._cleanupRun) cleanup run. Need to go through 0 sessions
+[2026-04-05T14:10:01.702Z] [DEBUG] (MemoryStore._cleanupRun) finished cleanup run
